@@ -1,7 +1,35 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        link(rel='stylesheet', href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css')
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+        script(src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js')
+
+    body#body
+
+        block content
+            div.buttons
+                button(type='button') Extract
+                button(type='button') Transform
+                button(type='button') Load
+                button(type='button') ETL
+
+        table#example.display(style='width:100%')
+
+script(type='text/javascript').
+    const myData = !{JSON.stringify(data)}
+    console.log(myData)
+    $(document).ready(function () {
+        $('#example').DataTable({
+            data: myData,
+            columns: [
+                {title: "Title"},
+                {title: "Price [zł]"}
+            ]
+        });
+    })
+
+
+

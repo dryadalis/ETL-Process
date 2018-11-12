@@ -1,6 +1,15 @@
 extends layout
 
+
 block content
-  h1= title
-  p Welcome to our app #{name}
-  button T
+    h1 ETL PROCESS
+
+    div.buttons
+        button(type='button') Extract
+        button(type='button') Transform
+        button(type='button') Load
+        button(type='button') ETL
+
+    ul
+        each item in abcd
+            li=item
