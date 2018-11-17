@@ -1,5 +1,10 @@
 var express = require('express');
 var router = express.Router();
+
+var exp = require('./extract.js');
+// var transform = require('./transform.js');
+// var load = require('./load.js');
+
 const rp = require('request-promise');
 const cheerio = require('cheerio');
 const {Client} = require('pg');
@@ -71,4 +76,3 @@ router.get('/', function (req, res) {
 });
 
 module.exports = router;
-
