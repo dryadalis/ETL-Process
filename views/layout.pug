@@ -4,8 +4,12 @@ html
         title= title
         link(rel='stylesheet', href='/stylesheets/style.css')
         link(rel='stylesheet', href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css')
-        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+
+        script(src='https://code.jquery.com/jquery-3.3.1.js')
         script(src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js')
+        script(src='https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js')
+        script(src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js')
+
 
     body#body
 
@@ -31,6 +35,14 @@ script(type='text/javascript').
             columns: [
                 {title: "Title"},
                 {title: "Price [zł]"}
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'csv',
+                    text: 'Eksportuj do csv',
+                    filename: 'realestate',
+                }
             ]
         });
     })
