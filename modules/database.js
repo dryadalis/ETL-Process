@@ -9,8 +9,24 @@ client.connect();
 
 client.query(
     'SELECT to_regclass("table_realestate")', (err, res) => {
-        if(err.code === '42703') {
+        console.log(err.code);
+        if (err.code === '42703') {
+
             client.query('DROP TABLE IF EXISTS Realestate');
+
             client.query('CREATE TABLE Realestate( ID SERIAL PRIMARY KEY, Title text, Price text)');
         }
-    });
+    }
+)
+
+
+// client.query(
+//     'SELECT to_regclass("table_extraction_result")', (err, res) => {
+//         console.log(err.code);
+//         if(err.code === '42703') {
+//             client.query('CREATE TABLE ExtractionResult( ID SERIAL PRIMARY KEY, Extraction text)');
+//         } else {
+//             client.query('DROP TABLE IF EXISTS ExtractionResult');
+//         }
+//     }
+// )
