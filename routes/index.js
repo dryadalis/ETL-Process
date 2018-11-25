@@ -25,7 +25,6 @@ router.get('/', function (req, res) {
 
   extract.then(function(extraction_result) {
       var transform = transformation.perform(extraction_result);
-      console.log(transform[0]);
       return transform;
   })
     .then(function(transformation_result){
