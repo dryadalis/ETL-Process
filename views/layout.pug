@@ -4,8 +4,12 @@ html
         title= title
         link(rel='stylesheet', href='/stylesheets/style.css')
         link(rel='stylesheet', href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css')
-        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+
+        script(src='https://code.jquery.com/jquery-3.3.1.js')
         script(src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js')
+        script(src='https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js')
+        script(src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js')
+
 
     body#body
 
@@ -24,13 +28,42 @@ html
 
 script(type='text/javascript').
     const myData = !{JSON.stringify(data)}
-    console.log(myData)
     $(document).ready(function () {
-        $('#example').DataTable({
+        let table = $('#example').DataTable({
             data: myData,
             columns: [
                 {title: "Title"},
-                {title: "Price [zł]"}
+                {title: "Price [zł]"},
+                {
+                    defaultContent: "<button>CSV</button>",
+                    title: "Export",
+                }
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'csv',
+                    text: 'Eksportuj do csv',
+                    filename: 'realestate',
+                }
             ]
         });
+
+        $('#example tbody').on('click', 'tr', function () {
+            let data = table
+                .row(this)
+                .data();
+
+            const stringData = data.join(',')
+            const title = "Title, Price[zł]\r\n"
+
+            let csvContent = "data:text/csv;charset=utf-8," + title + stringData;
+
+            var encodedUri = encodeURI(csvContent)
+            var link = document.createElement("a");
+            link.href = encodedUri
+            link.download = "advert.csv";
+            link.click();
+
+        })
     })

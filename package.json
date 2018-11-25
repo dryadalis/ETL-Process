@@ -6,6 +6,7 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "async": "^2.6.1",
     "cheerio": "^1.0.0-rc.2",
     "cookie-parser": "~1.4.3",
     "datatables.net": "^1.10.19",
@@ -16,6 +17,7 @@
     "jquery": "^3.3.1",
     "morgan": "~1.9.0",
     "pg": "^6.1.0",
+    "pg-copy-streams": "^1.2.0",
     "pug": "2.0.0-beta11",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"
