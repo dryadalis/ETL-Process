@@ -13,7 +13,7 @@ client.connect();
 /* GET home page. */
 router.get('/', async function (req, res) {
     await client.query("TRUNCATE realestate");
-    res.redirect('/');
+    res.redirect('/#cleared');
 });
 
 module.exports = router;

@@ -13,34 +13,37 @@ html
 
 body#body
     block content
-            #loader.loader
-                .lds-roller
-                    div
-                    div
-                    div
-                    div
-                    div
-                    div
-                    div
-                    div
-                p Czyszczenie bazy danych...
-            #wrapper.wrapper
-                .buttons
-                    a(href='extract')
-                        button(type='button') Extract
-                    a(href='transform')
-                        button(type='button') Transform
-                    a(href='load')
-                        button(type='button') Load
-                    button(type='button') ETL
-                    a(href='clear')
-                        button#clear(type='button') Wyczyść bazę danych
-                table#example.display(style='width:100%;')
+        #loader.loader
+            .lds-roller
+                div
+                div
+                div
+                div
+                div
+                div
+                div
+                div
+            p Czyszczenie bazy danych...
+        #wrapper.wrapper
+            .buttons
+                a(href='extract')
+                    button(type='button') Extract
+                a(href='transform')
+                    button(type='button') Transform
+                a(href='load')
+                    button(type='button') Load
+                button(type='button') ETL
+                a(href='clear')
+                    button#clear(type='button') Wyczyść bazę danych
+            table#example.display(style='width:100%;')
 
 
 script(type='text/javascript').
     const myData = !{JSON.stringify(data)}
     $(document).ready(function () {
+        if (window.location.href.indexOf('#cleared') !== -1) {
+            alert("Twoja baza danych zostala wyczyszczona")
+        }
         let table = $('#example').DataTable({
             data: myData,
             columns: [
@@ -78,12 +81,12 @@ script(type='text/javascript').
             link.click();
 
         })
-    })
+    });
     const clearBtn = document.getElementById('clear');
     const loader = document.getElementById('loader');
-    const tableWrapper = document.getElementById('wrapper')
+    const tableWrapper = document.getElementById('wrapper');
     clearBtn.addEventListener('click', function () {
         loader.style.display = "flex"
-        tableWrapper.style.display= "none"
+        tableWrapper.style.display = "none"
     });
 
