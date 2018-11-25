@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/clear-database');
 var extractRouter = require('./routes/extract');
 // var transformRouter = require('./routes/transform');
 var loadRouter = require('./routes/load')
@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/clear', usersRouter);
 app.use('/extract', extractRouter);
 // app.use('/transform', transformRouter);
 // app.use('/load', loadRouter);
