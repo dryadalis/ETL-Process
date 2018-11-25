@@ -11,22 +11,32 @@ html
         script(src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js')
 
 
-    body#body
+body#body
+    block content
+            #loader.loader
+                .lds-roller
+                    div
+                    div
+                    div
+                    div
+                    div
+                    div
+                    div
+                    div
+                p Czyszczenie bazy danych...
+            #wrapper.wrapper
+                .buttons
+                    a(href='extract')
+                        button(type='button') Extract
+                    a(href='transform')
+                        button(type='button') Transform
+                    a(href='load')
+                        button(type='button') Load
+                    button(type='button') ETL
+                    a(href='clear')
+                        button#clear(type='button') Wyczyść bazę danych
+                table#example.display(style='width:100%;')
 
-        block content
-            div.buttons
-                a(href="extract")
-                    button(type="button") Extract
-                a(href="transform")
-                    button(type="button") Transform
-                a(href="load")
-                    button(type="button") Load
-                button(type='button') ETL
-                a(href="clear")
-                    button(type="button") Wyczyść bazę danych
-
-
-        table#example.display(style='width:100%')
 
 script(type='text/javascript').
     const myData = !{JSON.stringify(data)}
@@ -69,3 +79,11 @@ script(type='text/javascript').
 
         })
     })
+    const clearBtn = document.getElementById('clear');
+    const loader = document.getElementById('loader');
+    const tableWrapper = document.getElementById('wrapper')
+    clearBtn.addEventListener('click', function () {
+        loader.style.display = "flex"
+        tableWrapper.style.display= "none"
+    });
+
