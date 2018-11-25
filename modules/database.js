@@ -10,12 +10,11 @@ client.connect();
 client.query(
     'SELECT to_regclass("table_realestate")', (err, res) => {
         console.log(err.code);
-        if(err.code === '42703') {
+        if (err.code === '42703') {
 
+            client.query('DROP TABLE IF EXISTS Realestate');
 
             client.query('CREATE TABLE Realestate( ID SERIAL PRIMARY KEY, Title text, Price text)');
-        } else {
-            client.query('DROP TABLE IF EXISTS Realestate');
         }
     }
 )
