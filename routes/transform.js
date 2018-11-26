@@ -29,7 +29,7 @@ router.get('/', function (req, res, next) {
         let prices = transform[4];
 
         let transformation_json = JSON.stringify([titles, prices]);
-        transformation_save.pop(transformation_json);
+        transformation_save.push(transformation_json);
       });
 
       client.query("DELETE FROM transformationresult", (err, res) => {
@@ -38,7 +38,7 @@ router.get('/', function (req, res, next) {
       );
 
       client.query(
-        "INSERT INTO transformationresult (transformation) VALUES ($1)", (transformation_save), (err, res) => {
+        "INSERT INTO TransformationResult(transformation) VALUES ($1)", (transformation_save), (err, res) => {
 
           console.log(res);
           return res;

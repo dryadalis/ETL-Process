@@ -21,6 +21,7 @@ client.connect()
 
 /* GET home page. */
 router.get('/', function (req, res) {
+
   var extract = extraction.perform();
 
   extract.then(function(extraction_result) {

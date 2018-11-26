@@ -29,7 +29,7 @@ app.use('/', indexRouter);
 app.use('/clear', usersRouter);
 app.use('/extract', extractRouter);
 app.use('/transform', transformRouter);
-// app.use('/load', loadRouter);
+app.use('/load', loadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
