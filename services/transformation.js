@@ -1,5 +1,4 @@
 const cheerio = require('cheerio');
-jQuery = require('jQuery');
 
  module.exports = {
   perform: function (parsed_page) {

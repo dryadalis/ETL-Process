@@ -118,6 +118,7 @@ script(type='text/javascript').
           });
         });
         
+<<<<<<< HEAD
         
     });
     
@@ -128,3 +129,16 @@ script(type='text/javascript').
         loader.style.display = "flex"
         tableWrapper.style.display = "none"
     });
+=======
+        $('#etl').on('click', function() {
+          $.ajax({
+            type : 'POST',
+            url : '/etl',
+            dataType: 'json',
+            success: function(d){
+              alert('data succesfully load into database');
+            }
+          });
+        });
+    })
+>>>>>>> working every button
