@@ -26,13 +26,10 @@ body#body
             p Czyszczenie bazy danych...
         #wrapper.wrapper
             .buttons
-                a(href='extract')
-                    button(type='button') Extract
-                a(href='transform')
-                    button(type='button') Transform
-                a(href='load')
-                    button(type='button') Load
-                button(type='button') ETL
+              button#extract(type="button") Extract
+              button#transform(type="button" disabled='true') Transform
+              button#load(type="button" disabled='true') Load
+              button(type='button') ETL
                 a(href='clear')
                     button#clear(type='button') Wyczyść bazę danych
             table#example.display(style='width:100%;')
@@ -81,7 +78,49 @@ script(type='text/javascript').
             link.click();
 
         })
+        
+        $('#extract').on('click', function() {
+          $('#transform').attr('disabled', true);
+          $.ajax({
+            type : 'POST',
+            url : '/extract',
+            dataType: 'json',
+            success: function(d){
+              alert('Extracted data ready to transform');
+              $('#transform').attr('disabled', false);
+            }
+          });
+        });
+        
+        $('#transform').on('click', function() {
+          $('#load').attr('disabled', false);
+          $.ajax({
+            type : 'POST',
+            url : '/transform',
+            dataType: 'json',
+            success: function(d){
+              alert('transformed data ready to load into database');
+              $('#load').attr('disabled', false);
+            }
+          });
+        });
+        
+        $('#load').on('click', function() {
+          $.ajax({
+            type : 'POST',
+            url : '/load',
+            dataType: 'json',
+            success: function(d){
+              alert('data succesfully load into database');
+              $('#load').attr('disabled', true);
+              $('#transform').attr('disabled', true);
+            }
+          });
+        });
+        
+        
     });
+    
     const clearBtn = document.getElementById('clear');
     const loader = document.getElementById('loader');
     const tableWrapper = document.getElementById('wrapper');
@@ -89,4 +128,3 @@ script(type='text/javascript').
         loader.style.display = "flex"
         tableWrapper.style.display = "none"
     });
-

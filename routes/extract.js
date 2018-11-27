@@ -12,31 +12,21 @@ const client = new Client({
 
 client.connect();
 
-router.get('/', function (req, res, next) {
+router.post('/', function (req, res, next) {
   var extract = extraction.perform();
 
   extract
   .then(function(extraction_result) {
+    client.query("DELETE FROM extractionresult")
+      .then(
+        client.query(
+          "INSERT INTO extractionresult (extraction) VALUES ($1) RETURNING id", ([extraction_result]), (err, res) => {
+            console.log(err);
+          }
+        )
+      );
 
-    client.query("DELETE FROM extractionresult");
-    client.query(
-      "INSERT INTO extractionresult (extraction) VALUES ($1) RETURNING id", ([extraction_result]), (err, res) => {
-      // "SELECT COUNT(*) FROM extractionresult ", (err, res) => {
-
-      // "SELECT table_name FROM information_schema.tables WHERE table_schema='public'", (err, res) => {
-        // "SELECT * FROM extractionresult", (err, res) => {
-          // select column_name,data_type
-          // from information_schema.columns
-          // where table_name = 'table_name';
-
-        console.log(err);
-        console.log(res.rows);
-        }
-    )
-
-    // res.send(extraction_result);
-    // id err == null idź daliiii
-    res.redirect('/');
+    res.json({status: 'ready'})
   });
 });
 

@@ -15,7 +15,7 @@ const client = new Client({
 client.connect();
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.post('/', function (req, res, next) {
     let transformation_save = [];
 
     client.query(
@@ -30,22 +30,18 @@ router.get('/', function (req, res, next) {
 
         let transformation_json = JSON.stringify([titles, prices]);
         transformation_save.push(transformation_json);
-      });
-
-      client.query("DELETE FROM transformationresult", (err, res) => {
-          console.log(err);
-        }
-      );
-
+      }).then(
+        client.query("DELETE FROM transformationresult", (err, res) => {
+            console.log(err);
+          })
+      ).then(
       client.query(
         "INSERT INTO TransformationResult(transformation) VALUES ($1)", (transformation_save), (err, res) => {
-
-          console.log(res);
-          return res;
+          console.log(err);
         }
-      );
+      ));
 
-    res.redirect('/');
+    res.json({status: 'ready'});
 });
 
 module.exports = router;

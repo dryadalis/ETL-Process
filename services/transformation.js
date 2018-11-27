@@ -18,7 +18,7 @@ jQuery = require('jQuery');
           titles[i] = $(this).text().trim();
           pure_titles.push(titles[i]);
       });
-      const listOfPrices = prices.map(function (i) {
+      const listOfPrices = prices.each(function (i) {
           prices[i] = $(this).text().trim();
           prices[i] = prices[i].replace('zł', '')
           pure_prices.push(prices[i]);

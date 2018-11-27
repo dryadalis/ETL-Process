@@ -13,18 +13,24 @@ const client = new Client({
 
 client.connect();
 
-router.get('/', function (req, res, next) {
+router.post('/', function (req, res, next) {
   client.query(
     "SELECT transformation FROM transformationresult LIMIT 1", (err, res) => {
+      console.log(err);
       return res;
     }
   )
   .then(function(res) {
 
       const transformation_result = JSON.parse(res.rows[0].transformation);
+      console.log('form database');
+      console.log(res.rows[0].transformation);
 
       const titles = transformation_result[0];
       const prices = transformation_result[1];
+
+      console.log('ready to load');
+      console.log(transformation_result);
 
       loading.perform(titles, prices, client);
 
@@ -32,7 +38,8 @@ router.get('/', function (req, res, next) {
       }
     )
     client.query("DELETE FROM transformationresult");
-    res.redirect('/');
+    // res.redirect('/');
+    res.json({status: 'ready'});
 });
 
 module.exports = router;

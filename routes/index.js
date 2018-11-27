@@ -23,19 +23,20 @@ client.connect()
 router.get('/', function (req, res) {
 
   var extract = extraction.perform();
-
-  extract.then(function(extraction_result) {
-      var transform = transformation.perform(extraction_result);
-      return transform;
-  })
-    .then(function(transformation_result){
-        const titles = transformation_result[0];
-        const prices = transformation_result[1];
-
-        loading.perform(titles, prices, client);
-  })
-    .then((err) => {
-        if (err) throw err;
+  // res.render('index');
+  //
+  // extract.then(function(extraction_result) {
+  //     var transform = transformation.perform(extraction_result);
+  //     return transform;
+  // })
+  //   .then(function(transformation_result){
+  //       const titles = transformation_result[0];
+  //       const prices = transformation_result[1];
+  //
+  //       loading.perform(titles, prices, client);
+  // })
+  //   .then((err) => {
+        // if (err) throw err;
             client.query("SELECT title, price FROM realestate", (err, response) => {
                 if (err) throw err;
                 const titles = response.rows;
@@ -49,11 +50,10 @@ router.get('/', function (req, res) {
                 res.render('layout', {
                     data: arr,
                 })
-          })
-      })
-      .catch((error) => {
-              console.log(error)
-      });
+          });
+      // .catch((error) => {
+      //         console.log(error)
+      // });
 });
 
 module.exports = router;
