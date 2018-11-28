@@ -36,7 +36,9 @@ router.post('/', function (req, res, next) {
 
       return res;
       }
-    )
+    ).catch((err) => {
+      console.log(err);
+});
     client.query("DELETE FROM transformationresult");
     // res.redirect('/');
     res.json({status: 'ready'});

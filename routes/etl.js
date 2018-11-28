@@ -31,7 +31,9 @@ router.post('/', function (req, res) {
         const prices = transformation_result[1];
 
         loading.perform(titles, prices, client);
-      });
+      }).catch((err) => {
+        console.log(err);
+  });
     res.json({status: 'ready'});
 });
 

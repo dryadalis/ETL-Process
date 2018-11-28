@@ -29,7 +29,9 @@ router.get('/', function (req, res) {
         res.render('layout', {
             data: arr,
         })
-    });
+    }).catch(function(error) {
+        console.log(error);
+      });
 });
 
 module.exports = router;

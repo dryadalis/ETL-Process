@@ -117,19 +117,7 @@ script(type='text/javascript').
             }
           });
         });
-        
-<<<<<<< HEAD
-        
-    });
-    
-    const clearBtn = document.getElementById('clear');
-    const loader = document.getElementById('loader');
-    const tableWrapper = document.getElementById('wrapper');
-    clearBtn.addEventListener('click', function () {
-        loader.style.display = "flex"
-        tableWrapper.style.display = "none"
-    });
-=======
+          
         $('#etl').on('click', function() {
           $.ajax({
             type : 'POST',
@@ -140,5 +128,12 @@ script(type='text/javascript').
             }
           });
         });
-    })
->>>>>>> working every button
+    });
+    
+    const clearBtn = document.getElementById('clear');
+    const loader = document.getElementById('loader');
+    const tableWrapper = document.getElementById('wrapper');
+    clearBtn.addEventListener('click', function () {
+        loader.style.display = "flex"
+        tableWrapper.style.display = "none"
+    });

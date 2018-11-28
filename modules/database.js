@@ -11,6 +11,6 @@ client.query(
     'SELECT to_regclass("table_realestate")', (err, res) => {
         if(err.code === '42703') {
             client.query('DROP TABLE IF EXISTS Realestate');
-            client.query('CREATE TABLE Realestate( ID SERIAL PRIMARY KEY, Title text, Price text)');
+            client.query('CREATE TABLE Realestate( ID SERIAL PRIMARY KEY, Title text CONSTRAINT must_be_different UNIQUE, Price text)');
         }
     });

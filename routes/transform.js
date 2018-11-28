@@ -39,7 +39,9 @@ router.post('/', function (req, res, next) {
         "INSERT INTO TransformationResult(transformation) VALUES ($1)", (transformation_save), (err, res) => {
           console.log(err);
         }
-      ));
+      )).catch((err) => {
+        console.log(err);
+  });
 
     res.json({status: 'ready'});
 });
