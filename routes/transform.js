@@ -14,7 +14,6 @@ const client = new Client({
 
 client.connect();
 
-/* GET home page. */
 router.post('/', function (req, res, next) {
     let transformation_save = [];
 
