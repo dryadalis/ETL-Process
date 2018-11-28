@@ -24,7 +24,9 @@ router.post('/', function (req, res, next) {
             console.log(err);
           }
         )
-      );
+      ).catch((err) => {
+        console.log(err);
+  });
 
     res.json({status: 'ready'})
   });

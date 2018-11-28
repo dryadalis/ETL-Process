@@ -14,7 +14,6 @@ const client = new Client({
 
 client.connect();
 
-/* GET home page. */
 router.post('/', function (req, res, next) {
     let transformation_save = [];
 
@@ -39,7 +38,9 @@ router.post('/', function (req, res, next) {
         "INSERT INTO TransformationResult(transformation) VALUES ($1)", (transformation_save), (err, res) => {
           console.log(err);
         }
-      ));
+      )).catch((err) => {
+        console.log(err);
+  });
 
     res.json({status: 'ready'});
 });

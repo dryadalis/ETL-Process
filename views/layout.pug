@@ -26,10 +26,10 @@ body#body
             p Czyszczenie bazy danych...
         #wrapper.wrapper
             .buttons
-              button#extract(type="button") Extract
-              button#transform(type="button" disabled='true') Transform
-              button#load(type="button" disabled='true') Load
-              button(type='button') ETL
+                button#extract(type="button") Extract
+                button#transform(type="button" disabled='true') Transform
+                button#load(type="button" disabled='true') Load
+                button(type='button') ETL
                 a(href='clear')
                     button#clear(type='button') Wyczyść bazę danych
             table#example.display(style='width:100%;')
@@ -99,8 +99,8 @@ script(type='text/javascript').
             url : '/transform',
             dataType: 'json',
             success: function(d){
-              alert('transformed data ready to load into database');
               $('#load').attr('disabled', false);
+              alert('transformed data ready to load into database');        
             }
           });
         });
@@ -114,22 +114,11 @@ script(type='text/javascript').
               alert('data succesfully load into database');
               $('#load').attr('disabled', true);
               $('#transform').attr('disabled', true);
+              location.reload();
             }
           });
         });
-        
-<<<<<<< HEAD
-        
-    });
-    
-    const clearBtn = document.getElementById('clear');
-    const loader = document.getElementById('loader');
-    const tableWrapper = document.getElementById('wrapper');
-    clearBtn.addEventListener('click', function () {
-        loader.style.display = "flex"
-        tableWrapper.style.display = "none"
-    });
-=======
+          
         $('#etl').on('click', function() {
           $.ajax({
             type : 'POST',
@@ -140,5 +129,12 @@ script(type='text/javascript').
             }
           });
         });
-    })
->>>>>>> working every button
+    });
+    
+    const clearBtn = document.getElementById('clear');
+    const loader = document.getElementById('loader');
+    const tableWrapper = document.getElementById('wrapper');
+    clearBtn.addEventListener('click', function () {
+        loader.style.display = "flex"
+        tableWrapper.style.display = "none"
+    });
