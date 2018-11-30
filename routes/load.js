@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var loading = require('../services/loading.js');
+const loading = require('../services/loading.js');
 
 const {Client} = require('pg');
 
@@ -13,7 +13,7 @@ const client = new Client({
 
 client.connect();
 
-router.post('/', function (req, res, next) {
+router.post('/', function (req, res) {
   client.query(
     "SELECT transformation FROM transformationresult LIMIT 1", (err, res) => {
       console.log(err);
@@ -21,26 +21,19 @@ router.post('/', function (req, res, next) {
     }
   )
   .then(function(res) {
-
       const transformation_result = JSON.parse(res.rows[0].transformation);
-      console.log('form database');
-      console.log(res.rows[0].transformation);
 
       const titles = transformation_result[0];
       const prices = transformation_result[1];
 
-      console.log('ready to load');
-      console.log(transformation_result);
-
       loading.perform(titles, prices, client);
 
       return res;
-      }
-    ).catch((err) => {
+      })
+      .catch((err) => {
       console.log(err);
 });
     client.query("DELETE FROM transformationresult");
-    // res.redirect('/');
     res.json({status: 'ready'});
 });
 

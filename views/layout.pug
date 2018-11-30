@@ -4,7 +4,7 @@ html
         title= title
         link(rel='stylesheet', href='/stylesheets/style.css')
         link(rel='stylesheet', href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css')
-
+        link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous")
         script(src='https://code.jquery.com/jquery-3.3.1.js')
         script(src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js')
         script(src='https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js')
@@ -44,11 +44,18 @@ script(type='text/javascript').
         let table = $('#example').DataTable({
             data: myData,
             columns: [
-                {title: "Title"},
-                {title: "Price [zł]"},
                 {
-                    defaultContent: "<button>CSV</button>",
+                    title: "Title",
+                    width: '84%'
+                },
+                {
+                    title: "Price [zł]",
+                    width: '10%',
+                },
+                {
+                    defaultContent: "<button class='csvBtn'><i class=\"fas fa-file-download\"></i> CSV</button>",
                     title: "Export",
+                    width: '6%',
                 }
             ],
             dom: 'Bfrtip',
@@ -61,9 +68,9 @@ script(type='text/javascript').
             ]
         });
 
-        $('#example tbody').on('click', 'tr', function () {
+        $('#example tbody').on('click', 'button', function () {
             let data = table
-                .row(this)
+                .row($(this).parents('tr'))
                 .data();
 
             const stringData = data.join(',')
@@ -78,7 +85,7 @@ script(type='text/javascript').
             link.click();
 
         })
-        
+
         $('#extract').on('click', function() {
           $('#transform').attr('disabled', true);
           $.ajax({
@@ -91,7 +98,7 @@ script(type='text/javascript').
             }
           });
         });
-        
+
         $('#transform').on('click', function() {
           $('#load').attr('disabled', false);
           $.ajax({
@@ -100,11 +107,11 @@ script(type='text/javascript').
             dataType: 'json',
             success: function(d){
               $('#load').attr('disabled', false);
-              alert('transformed data ready to load into database');        
+              alert('transformed data ready to load into database');
             }
           });
         });
-        
+
         $('#load').on('click', function() {
           $.ajax({
             type : 'POST',
@@ -118,7 +125,7 @@ script(type='text/javascript').
             }
           });
         });
-          
+
         $('#etl').on('click', function() {
           $.ajax({
             type : 'POST',
@@ -130,7 +137,7 @@ script(type='text/javascript').
           });
         });
     });
-    
+
     const clearBtn = document.getElementById('clear');
     const loader = document.getElementById('loader');
     const tableWrapper = document.getElementById('wrapper');

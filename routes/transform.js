@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var transformation = require('../services/transformation.js');
+const transformation = require('../services/transformation.js');
 
 
 const {Client} = require('pg');
@@ -14,33 +14,35 @@ const client = new Client({
 
 client.connect();
 
-router.post('/', function (req, res, next) {
+router.post('/', function (req, res) {
     let transformation_save = [];
 
     client.query(
-      "SELECT extraction FROM extractionresult LIMIT 1", (err, res) => {
-        return res;
+        "SELECT extraction FROM extractionresult LIMIT 1", (err, res) => {
+            return res;
         }
-      )
-      .then(function(extraction_result) {
-        let transform = transformation.perform(extraction_result.rows[0].extraction);
-        let titles = transform[3];
-        let prices = transform[4];
+    )
+        .then(function (extraction_result) {
+            let transform = transformation.perform(extraction_result.rows[0].extraction);
+            let titles = transform[3];
+            let prices = transform[4];
 
-        let transformation_json = JSON.stringify([titles, prices]);
-        transformation_save.push(transformation_json);
-      }).then(
-        client.query("DELETE FROM transformationresult", (err, res) => {
-            console.log(err);
-          })
-      ).then(
-      client.query(
-        "INSERT INTO TransformationResult(transformation) VALUES ($1)", (transformation_save), (err, res) => {
-          console.log(err);
-        }
-      )).catch((err) => {
+            let transformation_json = JSON.stringify([titles, prices]);
+            transformation_save.push(transformation_json);
+        })
+        .then(
+            client.query("DELETE FROM transformationresult", (err) => {
+                console.log(err);
+            })
+        )
+        .then(
+        client.query(
+            "INSERT INTO TransformationResult(transformation) VALUES ($1)", (transformation_save), (err, res) => {
+                console.log(err);
+            }
+        )).catch((err) => {
         console.log(err);
-  });
+    });
 
     res.json({status: 'ready'});
 });

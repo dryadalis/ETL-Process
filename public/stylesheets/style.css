@@ -107,4 +107,9 @@ body {
     transform: rotate(360deg);
   }
 }
-
+.csvBtn{
+  font-weight: bold;
+  color: white;
+  background: #6666ff;
+  border: none;
+}
