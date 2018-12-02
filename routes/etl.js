@@ -1,12 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const extraction = require('../services/extraction.js')
+const transformation = require('../services/transformation.js')
+const loading = require('../services/loading.js')
 
-var extraction = require('../services/extraction.js')
-var transformation = require('../services/transformation.js')
-var loading = require('../services/loading.js')
-
-const rp = require('request-promise');
-const cheerio = require('cheerio');
 const {Client} = require('pg');
 
 
@@ -20,20 +17,23 @@ client.connect()
 
 router.post('/', function (req, res) {
 
-  var extract = extraction.perform();
+  let extract = extraction.perform();
 
-  extract.then(function(extraction_result) {
-      var transform = transformation.perform(extraction_result);
-      return transform;
-  })
-    .then(function(transformation_result){
-        const titles = transformation_result[0];
-        const prices = transformation_result[1];
+    extract
+        .then(function (extraction_result) {
+        const transform = transformation.perform(extraction_result);
 
-        loading.perform(titles, prices, client);
-      }).catch((err) => {
+        return transform;
+        })
+        .then(function (transformation_result) {
+            const titles = transformation_result[0];
+            const prices = transformation_result[1];
+
+            loading.perform(titles, prices, client);
+        })
+        .catch((err) => {
         console.log(err);
-  });
+    });
     res.json({status: 'ready'});
 });
 
