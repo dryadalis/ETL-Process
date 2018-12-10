@@ -4,7 +4,7 @@ html
         title= title
         link(rel='stylesheet', href='/stylesheets/style.css')
         link(rel='stylesheet', href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css')
-
+        link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous")
         script(src='https://code.jquery.com/jquery-3.3.1.js')
         script(src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js')
         script(src='https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js')
@@ -26,20 +26,17 @@ body#body
             p Czyszczenie bazy danych...
         #wrapper.wrapper
             .buttons
-                a(href='extract')
-                    button(type='button') Extract
-                a(href='transform')
-                    button(type='button') Transform
-                a(href='load')
-                    button(type='button') Load
-                button(type='button') ETL
+                button#extract(type="button") Extract
+                button#transform(type="button" disabled='true') Transform
+                button#load(type="button" disabled='true') Load
+                button#etl(type='button') ETL
                 a(href='clear')
                     button#clear(type='button') Wyczyść bazę danych
             table#example.display(style='width:100%;')
 
-
 script(type='text/javascript').
-    const myData = !{JSON.stringify(data)}
+    const myData = !{JSON.stringify(data)};
+
     $(document).ready(function () {
         if (window.location.href.indexOf('#cleared') !== -1) {
             alert("Twoja baza danych zostala wyczyszczona")
@@ -47,11 +44,18 @@ script(type='text/javascript').
         let table = $('#example').DataTable({
             data: myData,
             columns: [
-                {title: "Title"},
-                {title: "Price [zł]"},
                 {
-                    defaultContent: "<button>CSV</button>",
+                    title: "Title",
+                    width: '84%'
+                },
+                {
+                    title: "Price [zł]",
+                    width: '10%',
+                },
+                {
+                    defaultContent: "<button class='csvBtn'><i class=\"fas fa-file-download\"></i> CSV</button>",
                     title: "Export",
+                    width: '6%',
                 }
             ],
             dom: 'Bfrtip',
@@ -64,9 +68,9 @@ script(type='text/javascript').
             ]
         });
 
-        $('#example tbody').on('click', 'tr', function () {
+        $('#example tbody').on('click', 'button', function () {
             let data = table
-                .row(this)
+                .row($(this).parents('tr'))
                 .data();
 
             const stringData = data.join(',')
@@ -74,14 +78,67 @@ script(type='text/javascript').
 
             let csvContent = "data:text/csv;charset=utf-8," + title + stringData;
 
-            var encodedUri = encodeURI(csvContent)
-            var link = document.createElement("a");
+            const encodedUri = encodeURI(csvContent)
+            const link = document.createElement("a");
             link.href = encodedUri
             link.download = "advert.csv";
             link.click();
 
         })
+
+        $('#extract').on('click', function () {
+            $('#transform').attr('disabled', true);
+            $.ajax({
+                type: 'POST',
+                url: '/extract',
+                dataType: 'json',
+                success: function () {
+                    alert('Extracted data ready to transform');
+                    $('#transform').attr('disabled', false);
+                }
+            });
+        });
+
+        $('#transform').on('click', function () {
+            $('#load').attr('disabled', false);
+            $.ajax({
+                type: 'POST',
+                url: '/transform',
+                dataType: 'json',
+                success: function () {
+                    $('#load').attr('disabled', false);
+                    alert('transformed data ready to load into database');
+                }
+            });
+        });
+
+        $('#load').on('click', function () {
+            $.ajax({
+                type: 'POST',
+                url: '/load',
+                dataType: 'json',
+                success: function () {
+                    alert('data succesfully load into database');
+                    $('#load').attr('disabled', true);
+                    $('#transform').attr('disabled', true);
+                    window.location.href = 'http://localhost:3000/';
+                }
+            });
+        });
+
+        $('#etl').on('click', function () {
+            $.ajax({
+                type: 'POST',
+                url: '/etl',
+                dataType: 'json',
+                success: function () {
+                    alert('data succesfully load into database');
+                    window.location.href = 'http://localhost:3000/';
+                }
+            });
+        });
     });
+
     const clearBtn = document.getElementById('clear');
     const loader = document.getElementById('loader');
     const tableWrapper = document.getElementById('wrapper');
@@ -89,4 +146,3 @@ script(type='text/javascript').
         loader.style.display = "flex"
         tableWrapper.style.display = "none"
     });
-

@@ -8,9 +8,9 @@ const client = new Client({
 client.connect();
 
 client.query(
-    'SELECT to_regclass("table_realestate")', (err, res) => {
-        if(err.code === '42703') {
-            client.query('DROP TABLE IF EXISTS Realestate');
-            client.query('CREATE TABLE Realestate( ID SERIAL PRIMARY KEY, Title text, Price text)');
+    'SELECT to_regclass("table_realestate")', (err) => {
+            if(err.code === '42703') {
+                client.query('DROP TABLE IF EXISTS Realestate');
+                client.query('CREATE TABLE Realestate( ID SERIAL PRIMARY KEY, Title text CONSTRAINT must_be_different UNIQUE, Price text)');
         }
     });
