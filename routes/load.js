@@ -1,3 +1,4 @@
+
 const express = require('express');
 const router = express.Router();
 
@@ -31,7 +32,8 @@ router.post('/', function (req, res) {
       return res;
       })
       .catch((err) => {
-      console.log(err);
+        console.log(err);
+
 });
     client.query("DELETE FROM transformationresult");
     res.json({status: 'ready'});

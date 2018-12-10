@@ -88,13 +88,16 @@ script(type='text/javascript').
 
         $('#extract').on('click', function () {
             $('#transform').attr('disabled', true);
+            $('#load').attr('disabled', true);
             $.ajax({
                 type: 'POST',
                 url: '/extract',
                 dataType: 'json',
                 success: function () {
-                    alert('Extracted data ready to transform');
                     $('#transform').attr('disabled', false);
+                    $('#extract').attr('disabled', true);
+                    alert('Extracted data ready to transform');
+                    
                 }
             });
         });
@@ -107,6 +110,7 @@ script(type='text/javascript').
                 dataType: 'json',
                 success: function () {
                     $('#load').attr('disabled', false);
+                    $('#transform').attr('disabled', true);
                     alert('transformed data ready to load into database');
                 }
             });
@@ -121,6 +125,7 @@ script(type='text/javascript').
                     alert('data succesfully load into database');
                     $('#load').attr('disabled', true);
                     $('#transform').attr('disabled', true);
+                    $('#extract').attr('disabled', false);
                     window.location.href = 'http://localhost:3000/';
                 }
             });
