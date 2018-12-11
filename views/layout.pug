@@ -46,11 +46,15 @@ script(type='text/javascript').
             columns: [
                 {
                     title: "Title",
-                    width: '84%'
+                    width: '34%'
                 },
                 {
                     title: "Price [zł]",
                     width: '10%',
+                },
+                {
+                    title: "Desc",
+                    width: '50%',
                 },
                 {
                     defaultContent: "<button class='csvBtn'><i class=\"fas fa-file-download\"></i> CSV</button>",
@@ -97,7 +101,7 @@ script(type='text/javascript').
                     $('#transform').attr('disabled', false);
                     $('#extract').attr('disabled', true);
                     alert('Extracted data ready to transform');
-                    
+
                 }
             });
         });
@@ -137,7 +141,7 @@ script(type='text/javascript').
                 url: '/etl',
                 dataType: 'json',
                 success: function () {
-                    alert('data succesfully load into database');
+                    alert('data successfully load into database');
                     window.location.href = 'http://localhost:3000/';
                 }
             });

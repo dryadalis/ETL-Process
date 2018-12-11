@@ -13,14 +13,15 @@ const client = new Client({
 client.connect()
 
 router.get('/', function (req, res) {
-    client.query("SELECT title, price FROM realestate", (err, response) => {
+    client.query("SELECT title, price, description FROM realestate", (err, response) => {
         if (err) throw err;
         const titles = response.rows;
         const prices = response.rows;
+        const descriptions = response.rows;
         const arr = [];
 
         for (let i = 0; i < titles.length; i++) {
-            arr.push([titles[i].title, prices[i].price]);
+            arr.push([titles[i].title, prices[i].price,  descriptions[i].description]);
         }
 
         res.render('layout', {
