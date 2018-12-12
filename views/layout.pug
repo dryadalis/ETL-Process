@@ -52,8 +52,9 @@ script(type='text/javascript').
 
     $(document).ready(function () {
         if (window.location.href.indexOf('#cleared') !== -1) {
-            alert("Twoja baza danych została wyczyszczona")
+            alert("Twoja baza danych została wyczyszczona");
         }
+
         let table = $('#example').DataTable({
             data: myData,
             columns: [
@@ -119,9 +120,12 @@ script(type='text/javascript').
                 success: function () {
                     $('#transform').attr('disabled', false);
                     $('#extract').attr('disabled', true);
+                    if(myData.length < 0) {
+                        $('#extract').attr('disabled', true);
+                    }
                     loaderEtl.style.display = "none";
                     tableWrapper.style.display = "block";
-                    alert('Extracted data ready to transform');
+                    alert(`Extracted data ready to transform`);
                 }
             });
         });
@@ -172,10 +176,9 @@ script(type='text/javascript').
                 url: '/etl',
                 dataType: 'json',
                 success: function () {
-                    loaderEtl.style.display = 'none';
-                    tableWrapper.style.display = 'block';
                     alert('data successfully load into database');
                     window.location.href = 'http://localhost:3000/';
+
                 }
             });
         });
