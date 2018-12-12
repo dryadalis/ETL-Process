@@ -48,6 +48,7 @@ body#body
 script(type='text/javascript').
     const myData = !{JSON.stringify(data)};
     const loaderEtl = document.getElementById('loaderEtl');
+    const tableWrapper = document.getElementById('wrapper');
 
     $(document).ready(function () {
         if (window.location.href.indexOf('#cleared') !== -1) {
@@ -109,6 +110,7 @@ script(type='text/javascript').
             $('#load').attr('disabled', true);
 
             loaderEtl.style.display = "flex";
+            tableWrapper.style.display = "none";
 
             $.ajax({
                 type: 'POST',
@@ -118,6 +120,7 @@ script(type='text/javascript').
                     $('#transform').attr('disabled', false);
                     $('#extract').attr('disabled', true);
                     loaderEtl.style.display = "none";
+                    tableWrapper.style.display = "block";
                     alert('Extracted data ready to transform');
                 }
             });
@@ -126,12 +129,14 @@ script(type='text/javascript').
         $('#transform').on('click', function () {
             $('#load').attr('disabled', false);
             loaderEtl.style.display = "flex";
+            tableWrapper.style.display= "none";
             $.ajax({
                 type: 'POST',
                 url: '/transform',
                 dataType: 'json',
                 success: function () {
                     loaderEtl.style.display = "none";
+                    tableWrapper.style.display = "block"
                     alert('transformed data ready to load into database');
                     $('#load').attr('disabled', false);
                     $('#transform').attr('disabled', true);
@@ -142,12 +147,14 @@ script(type='text/javascript').
 
         $('#load').on('click', function () {
             loaderEtl.style.display = "flex";
+            tableWrapper.style.display = "none";
             $.ajax({
                 type: 'POST',
                 url: '/load',
                 dataType: 'json',
                 success: function () {
                     loaderEtl.style.display = "none";
+                    loaderEtl.style.display = "block";
                     alert('data succesfully load into database');
                     $('#load').attr('disabled', true);
                     $('#transform').attr('disabled', true);
@@ -158,11 +165,15 @@ script(type='text/javascript').
         });
 
         $('#etl').on('click', function () {
+            loaderEtl.style.display = 'flex';
+            tableWrapper.style.display = 'none';
             $.ajax({
                 type: 'POST',
                 url: '/etl',
                 dataType: 'json',
                 success: function () {
+                    loaderEtl.style.display = 'none';
+                    tableWrapper.style.display = 'block';
                     alert('data successfully load into database');
                     window.location.href = 'http://localhost:3000/';
                 }
@@ -172,8 +183,7 @@ script(type='text/javascript').
 
     const clearBtn = document.getElementById('clear');
     const loader = document.getElementById('loader');
-    
-    const tableWrapper = document.getElementById('wrapper');
+
     clearBtn.addEventListener('click', function () {
         loader.style.display = "flex";
         tableWrapper.style.display = "none";
