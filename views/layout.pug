@@ -47,6 +47,7 @@ body#body
 
 script(type='text/javascript').
     const myData = !{JSON.stringify(data)};
+    const loaderEtl = document.getElementById('loaderEtl');
 
     $(document).ready(function () {
         if (window.location.href.indexOf('#cleared') !== -1) {
@@ -90,7 +91,7 @@ script(type='text/javascript').
                 .data();
 
             const stringData = data.join(',')
-            const title = "Title, Price[zł]\r\n"
+            const title = "Title, Price[zł], Data of addition\r\n"
 
             let csvContent = "data:text/csv;charset=utf-8," + title + stringData;
 
@@ -106,9 +107,9 @@ script(type='text/javascript').
         $('#extract').on('click', function () {
             $('#transform').attr('disabled', true);
             $('#load').attr('disabled', true);
-            
+
             loaderEtl.style.display = "flex";
-            
+
             $.ajax({
                 type: 'POST',
                 url: '/extract',
@@ -134,7 +135,7 @@ script(type='text/javascript').
                     alert('transformed data ready to load into database');
                     $('#load').attr('disabled', false);
                     $('#transform').attr('disabled', true);
-                    
+
                 }
             });
         });
@@ -170,12 +171,10 @@ script(type='text/javascript').
     });
 
     const clearBtn = document.getElementById('clear');
-    
     const loader = document.getElementById('loader');
-    const loaderEtl = document.getElementById('loaderEtl');
     
     const tableWrapper = document.getElementById('wrapper');
     clearBtn.addEventListener('click', function () {
-        loader.style.display = "flex"
-        tableWrapper.style.display = "none"
+        loader.style.display = "flex";
+        tableWrapper.style.display = "none";
     });
