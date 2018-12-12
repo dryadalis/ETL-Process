@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+const cheerio = require('cheerio')
 var extraction = require('../services/extraction.js')
 
 const {Client} = require('pg');
@@ -12,24 +12,24 @@ const client = new Client({
 
 client.connect();
 
-router.post('/', function (req, res, next) {
-  var extract = extraction.perform();
+router.post('/', async function (req, res,) {
 
-  extract
-  .then(function(extraction_result) {
-    client.query("DELETE FROM extractionresult")
-      .then(
-        client.query(
-          "INSERT INTO extractionresult (extraction) VALUES ($1) RETURNING id", ([extraction_result]), (err, res) => {
-            console.log(err);
-          }
-        )
-      ).catch((err) => {
-        console.log(err);
-  });
+        let uri = `https://www.gumtree.pl/s-nieruchomosci/krakow/v1c2l3200208p1`;
+        const bodies = [];
+        for(let i = 0; i < 3; i++) {
+            const body = await extraction.perform(uri);
+            bodies.push(body);
+            let $ = cheerio.load(body);
+            uri = $('.next.follows')[0].attribs.href;
+            uri = `https://www.gumtree.pl${uri}`;
+        }
 
-    res.json({status: 'ready'})
-  });
+        await client.query("DELETE FROM extractionresult");
+        await client.query(
+            "INSERT INTO extractionresult (extraction) VALUES ($1) RETURNING id",
+            [JSON.stringify(bodies)]
+        );
+        res.json({status: 'ready'})
 });
 
 module.exports = router;

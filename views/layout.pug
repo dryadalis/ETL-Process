@@ -39,23 +39,28 @@ script(type='text/javascript').
 
     $(document).ready(function () {
         if (window.location.href.indexOf('#cleared') !== -1) {
-            alert("Twoja baza danych zostala wyczyszczona")
+            alert("Twoja baza danych została wyczyszczona")
         }
         let table = $('#example').DataTable({
             data: myData,
             columns: [
                 {
-                    title: "Title",
-                    width: '84%'
+                    title: "Tytuł",
+                    width: '78%'
                 },
                 {
-                    title: "Price [zł]",
-                    width: '10%',
+                    title: "Cena [zł]",
+                    width: '8%',
+                },
+                {
+                    title: "Data dodania",
+                    width: '8%',
                 },
                 {
                     defaultContent: "<button class='csvBtn'><i class=\"fas fa-file-download\"></i> CSV</button>",
                     title: "Export",
-                    width: '6%',
+                    orderable: false,
+                    width: '5%',
                 }
             ],
             dom: 'Bfrtip',
@@ -84,7 +89,8 @@ script(type='text/javascript').
             link.download = "advert.csv";
             link.click();
 
-        })
+        });
+
 
         $('#extract').on('click', function () {
             $('#transform').attr('disabled', true);
@@ -97,7 +103,7 @@ script(type='text/javascript').
                     $('#transform').attr('disabled', false);
                     $('#extract').attr('disabled', true);
                     alert('Extracted data ready to transform');
-                    
+
                 }
             });
         });
@@ -137,7 +143,7 @@ script(type='text/javascript').
                 url: '/etl',
                 dataType: 'json',
                 success: function () {
-                    alert('data succesfully load into database');
+                    alert('data successfully load into database');
                     window.location.href = 'http://localhost:3000/';
                 }
             });

@@ -14,29 +14,17 @@ const client = new Client({
 
 client.connect();
 
-router.post('/', function (req, res) {
-  client.query(
-    "SELECT transformation FROM transformationresult LIMIT 1", (err, res) => {
-      console.log(err);
-      return res;
-    }
-  )
-  .then(function(res) {
-      const transformation_result = JSON.parse(res.rows[0].transformation);
-
-      const titles = transformation_result[0];
-      const prices = transformation_result[1];
-
-      loading.perform(titles, prices, client);
-
-      return res;
-      })
-      .catch((err) => {
-        console.log(err);
-
-});
-    client.query("DELETE FROM transformationresult");
+router.post('/', async function (req, res) {
+    const dbRes = await client.query("SELECT transformation FROM transformationresult LIMIT 1")
+    const transformation_result = JSON.parse(dbRes.rows[0].transformation);
+    const titles = transformation_result[0];
+    const prices = transformation_result[1];
+    const dataOfAddition = transformation_result[2];
+    await loading.perform(titles, prices, client, dataOfAddition);
+    await client.query("DELETE FROM transformationresult");
     res.json({status: 'ready'});
+
+
 });
 
 module.exports = router;
