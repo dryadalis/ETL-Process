@@ -24,6 +24,17 @@ body#body
                 div
                 div
             p Czyszczenie bazy danych...
+        #loaderEtl.loader
+          .lds-roller
+              div
+              div
+              div
+              div
+              div
+              div
+              div
+              div
+          p Przetwarzenie danych...
         #wrapper.wrapper
             .buttons
                 button#extract(type="button") Extract
@@ -95,6 +106,9 @@ script(type='text/javascript').
         $('#extract').on('click', function () {
             $('#transform').attr('disabled', true);
             $('#load').attr('disabled', true);
+            
+            loaderEtl.style.display = "flex";
+            
             $.ajax({
                 type: 'POST',
                 url: '/extract',
@@ -102,32 +116,37 @@ script(type='text/javascript').
                 success: function () {
                     $('#transform').attr('disabled', false);
                     $('#extract').attr('disabled', true);
+                    loaderEtl.style.display = "none";
                     alert('Extracted data ready to transform');
-
                 }
             });
         });
 
         $('#transform').on('click', function () {
             $('#load').attr('disabled', false);
+            loaderEtl.style.display = "flex";
             $.ajax({
                 type: 'POST',
                 url: '/transform',
                 dataType: 'json',
                 success: function () {
+                    loaderEtl.style.display = "none";
+                    alert('transformed data ready to load into database');
                     $('#load').attr('disabled', false);
                     $('#transform').attr('disabled', true);
-                    alert('transformed data ready to load into database');
+                    
                 }
             });
         });
 
         $('#load').on('click', function () {
+            loaderEtl.style.display = "flex";
             $.ajax({
                 type: 'POST',
                 url: '/load',
                 dataType: 'json',
                 success: function () {
+                    loaderEtl.style.display = "none";
                     alert('data succesfully load into database');
                     $('#load').attr('disabled', true);
                     $('#transform').attr('disabled', true);
@@ -151,7 +170,10 @@ script(type='text/javascript').
     });
 
     const clearBtn = document.getElementById('clear');
+    
     const loader = document.getElementById('loader');
+    const loaderEtl = document.getElementById('loaderEtl');
+    
     const tableWrapper = document.getElementById('wrapper');
     clearBtn.addEventListener('click', function () {
         loader.style.display = "flex"

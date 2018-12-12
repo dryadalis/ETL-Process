@@ -10,6 +10,7 @@ const connectionString = 'postgres://qilciwcvmwwkeq:88b0ff2774f7302ceceeba400581
 
 const client = new Client({
     connectionString: connectionString,
+    
 });
 
 client.connect();
