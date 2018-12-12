@@ -19,8 +19,8 @@ router.post('/', async function (req, res) {
             let transform = await transformation.perform(extraction_result.rows[0].extraction);
             let titles = transform[3];
             let prices = transform[4];
-            let descs = transform[5];
-            let transformation_json = JSON.stringify([titles, prices, descs]);
+            let dataOfAddition = transform[5];
+            let transformation_json = JSON.stringify([titles, prices, dataOfAddition]);
             transformation_save.push(transformation_json);
         })
         .then(() => client.query("DELETE FROM transformationresult"))

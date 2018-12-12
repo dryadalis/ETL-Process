@@ -52,8 +52,8 @@ const rp = require('request-promise');
           return rp({ uri: `https://www.gumtree.pl${link}` })
             .then(body => {
               const a = cheerio.load(body);
-              const description = a('.pre').text().trim();
-              return description;
+              const dataOfAddition = a('.selMenu').find('.value').first().text().trim();
+              return dataOfAddition;
           })
       }));
 

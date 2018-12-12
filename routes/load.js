@@ -19,8 +19,8 @@ router.post('/', async function (req, res) {
     const transformation_result = JSON.parse(dbRes.rows[0].transformation);
     const titles = transformation_result[0];
     const prices = transformation_result[1];
-    const descs = transformation_result[2];
-    await loading.perform(titles, prices, client, descs);
+    const dataOfAddition = transformation_result[2];
+    await loading.perform(titles, prices, client, dataOfAddition);
     await client.query("DELETE FROM transformationresult");
     res.json({status: 'ready'});
 

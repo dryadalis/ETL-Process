@@ -12,7 +12,7 @@ const client = new Client({
 
 client.connect();
 
-router.post('/', async function (req, res, next) {
+router.post('/', async function (req, res,) {
 
         let uri = `https://www.gumtree.pl/s-nieruchomosci/krakow/v1c2l3200208p1`;
         const bodies = [];
