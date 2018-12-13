@@ -16,8 +16,17 @@ router.post('/', async function (req, res) {
     const transformation_result = JSON.parse(dbRes.rows[0].transformation);
     const titles = transformation_result[0];
     const prices = transformation_result[1];
-    const dataOfAddition = transformation_result[2];
-    await loading.perform(titles, prices, client, dataOfAddition);
+    const dataOfAddition = transformation_result[2][0];
+    const location = transformation_result[2][1];
+    const loaner = transformation_result[2][2];
+    const propertyKind = transformation_result[2][3];
+    const rooms = transformation_result[2][4];
+    const bathrooms = transformation_result[2][5];
+    const area = transformation_result[2][6];
+    const garage = transformation_result[2][7];
+
+
+    await loading.perform(titles, prices, client, dataOfAddition, location, loaner, propertyKind, rooms, bathrooms, area, garage);
     await client.query("DELETE FROM transformationresult");
     res.json({status: 'ready'});
 

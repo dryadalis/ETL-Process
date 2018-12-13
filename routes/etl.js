@@ -46,8 +46,17 @@ router.post('/:city', async function (req, res,) {
             let transform = await transformation.perform(extraction_result.rows[0].extraction);
             let titles = transform[3];
             let prices = transform[4];
-            let dataOfAddition = transform[5];
-            let transformation_json = JSON.stringify([titles, prices, dataOfAddition]);
+            const dataOfAddition = transform[5][0];
+            console.log(transform[5][0])
+            console.log(transform[5][0])
+            const location = transform[5][1];
+            const loaner = transform[5][2];
+            const propertyKind = transform[5][3];
+            const rooms = transform[5][4];
+            const bathrooms = transform[5][5];
+            const area = transform[5][6];
+            const garage = transform[5][7];
+            let transformation_json = JSON.stringify([titles, prices, dataOfAddition, location, loaner, propertyKind, rooms, bathrooms, area, garage]);
             transformation_save.push(transformation_json);
         })
         .then(() => client.query("DELETE FROM transformationresult"))
@@ -59,8 +68,16 @@ router.post('/:city', async function (req, res,) {
     const transformation_result = JSON.parse(dbRes.rows[0].transformation);
     const titles = transformation_result[0];
     const prices = transformation_result[1];
-    const dataOfAddition = transformation_result[2];
-    await loading.perform(titles, prices, client, dataOfAddition);
+    const dataOfAddition = transformation_result[2][0];
+    const location = transformation_result[2][1];
+    const loaner = transformation_result[2][2];
+    const propertyKind = transformation_result[2][3];
+    const rooms = transformation_result[2][4];
+    const bathrooms = transformation_result[2][5];
+    const area = transformation_result[2][6];
+    const garage = transformation_result[2][7];
+
+    await loading.perform(titles, prices, client, dataOfAddition, location, loaner, propertyKind, rooms, bathrooms, area, garage);
     await client.query("DELETE FROM transformationresult");
 
     res.json({status: 'ready'})
