@@ -67,15 +67,15 @@ script(type='text/javascript').
             data: myData,
             columns: [
                 {
-                    title: "Tytuł",
+                    title: "Title",
                     width: '78%'
                 },
                 {
-                    title: "Cena [zł]",
+                    title: "Price[zł]",
                     width: '8%',
                 },
                 {
-                    title: "Data dodania",
+                    title: "Date of addition",
                     width: '8%',
                 },
                 {
@@ -89,7 +89,7 @@ script(type='text/javascript').
             buttons: [
                 {
                     extend: 'csv',
-                    text: 'Eksportuj do csv',
+                    text: 'Export csv',
                     filename: 'realestate',
                 }
             ]
@@ -101,7 +101,7 @@ script(type='text/javascript').
                 .data();
 
             const stringData = data.join(',')
-            const title = "Title, Price[zł], Data of addition\r\n"
+            const title = "Title, Price[zł], Addition date\r\n"
 
             let csvContent = "data:text/csv;charset=utf-8," + title + stringData;
 
@@ -126,7 +126,7 @@ script(type='text/javascript').
                 type: 'POST',
                 url: `/extract/${selectValue}`,
                 dataType: 'json',
-                success: function () {
+                success: function (e) {
                     $('#transform').attr('disabled', false);
                     $('#extract').attr('disabled', true);
                     if (myData.length < 0) {
@@ -134,12 +134,13 @@ script(type='text/javascript').
                     }
                     loaderEtl.style.display = "none";
                     tableWrapper.style.display = "block";
-                    alert(`Extracted data ready to transform`);
+                    alert(`Extracted data ready to transform.\nData was extracted from ${e.amount} pages.`);
+
                 }
             });
         });
 
-        $('#transform').on('click', function () {
+        $('#transform').on('click', function (e) {
             $('#load').attr('disabled', false);
             loaderEtl.style.display = "flex";
             tableWrapper.style.display = "none";
@@ -147,10 +148,10 @@ script(type='text/javascript').
                 type: 'POST',
                 url: '/transform',
                 dataType: 'json',
-                success: function () {
+                success: function (e) {
                     loaderEtl.style.display = "none";
                     tableWrapper.style.display = "block"
-                    alert('transformed data ready to load into database');
+                    alert(`${e.amount} data was transformed. \nTransformed data are ready to load into database.`);
                     $('#load').attr('disabled', false);
                     $('#transform').attr('disabled', true);
 
@@ -165,10 +166,10 @@ script(type='text/javascript').
                 type: 'POST',
                 url: '/load',
                 dataType: 'json',
-                success: function () {
+                success: function (e) {
                     loaderEtl.style.display = "none";
                     loaderEtl.style.display = "block";
-                    alert('data succesfully load into database');
+                    alert(`${e.amount} data was succesfully load into the database.`);
                     $('#load').attr('disabled', true);
                     $('#transform').attr('disabled', true);
                     $('#extract').attr('disabled', false);
@@ -186,8 +187,8 @@ script(type='text/javascript').
                 type: 'POST',
                 url: `/etl/${selectValue}`,
                 dataType: 'json',
-                success: function () {
-                    alert('data successfully load into database');
+                success: function (e) {
+                    alert(`ETL process was successfully carried out.\nData was extracted from ${e.amountB} pages.\n ${e.amountAll} data was succesfully load into the database.`);
                     window.location.href = 'http://localhost:3000/';
 
                 }

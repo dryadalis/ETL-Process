@@ -29,13 +29,14 @@ router.post('/:city', async function (req, res,) {
             uri = $('.next.follows')[0].attribs.href;
             uri = `https://www.gumtree.pl${uri}`;
         }
+        console.log(bodies);
 
         await client.query("DELETE FROM extractionresult");
         await client.query(
             "INSERT INTO extractionresult (extraction) VALUES ($1) RETURNING id",
             [JSON.stringify(bodies)]
         );
-        res.json({status: 'ready'})
+        res.json({status: 'ready', amount: bodies.length});
 });
 
 module.exports = router;

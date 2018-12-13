@@ -21,7 +21,7 @@ router.get('/', function (req, res) {
         const arr = [];
 
         for (let i = 0; i < titles.length; i++) {
-            arr.push([titles[i].title, prices[i].price,  descriptions[i].description]);
+            arr.push([titles[i].title, prices[i].price, descriptions[i].description]);
         }
 
         res.render('layout', {

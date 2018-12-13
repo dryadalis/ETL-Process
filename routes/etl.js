@@ -60,10 +60,12 @@ router.post('/:city', async function (req, res,) {
     const titles = transformation_result[0];
     const prices = transformation_result[1];
     const dataOfAddition = transformation_result[2];
+
+    const allEtlData = title.length + prices.length + dataOfAddition.length;
     await loading.perform(titles, prices, client, dataOfAddition);
     await client.query("DELETE FROM transformationresult");
 
-    res.json({status: 'ready'})
+    res.json({status: 'ready', amountB: bodies.length, amountAll: allEtlData});
 
 });
 

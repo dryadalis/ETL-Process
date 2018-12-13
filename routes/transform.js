@@ -22,6 +22,8 @@ router.post('/', async function (req, res) {
             let dataOfAddition = transform[5];
             let transformation_json = JSON.stringify([titles, prices, dataOfAddition]);
             transformation_save.push(transformation_json);
+            let allTransformetData = prices.length + titles.length + dataOfAddition.length;
+            res.json({amount: allTransformetData});
         })
         .then(() => client.query("DELETE FROM transformationresult"))
         .then(() => client.query("INSERT INTO TransformationResult(transformation) VALUES ($1)", transformation_save))
