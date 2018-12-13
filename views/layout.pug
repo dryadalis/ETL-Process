@@ -25,16 +25,24 @@ body#body
                 div
             p Czyszczenie bazy danych...
         #loaderEtl.loader
-          .lds-roller
-              div
-              div
-              div
-              div
-              div
-              div
-              div
-              div
-          p Przetwarzenie danych...
+            .lds-roller
+                div
+                div
+                div
+                div
+                div
+                div
+                div
+                div
+            p Przetwarzenie danych...
+        #chooser.chooser
+
+            select#mySel
+                option(value='krakow') Kraków
+                option(value='warsaw') Warszawa
+                option(value='rzeszow') Rzeszów
+                option(value='wroclaw') Wrocław
+            p Wybierz miasto:
         #wrapper.wrapper
             .buttons
                 button#extract(type="button") Extract
@@ -48,11 +56,13 @@ body#body
 script(type='text/javascript').
     const myData = !{JSON.stringify(data)};
     const loaderEtl = document.getElementById('loaderEtl');
+    const tableWrapper = document.getElementById('wrapper');
 
     $(document).ready(function () {
         if (window.location.href.indexOf('#cleared') !== -1) {
-            alert("Twoja baza danych została wyczyszczona")
+            alert("Twoja baza danych została wyczyszczona");
         }
+
         let table = $('#example').DataTable({
             data: myData,
             columns: [
@@ -109,16 +119,22 @@ script(type='text/javascript').
             $('#load').attr('disabled', true);
 
             loaderEtl.style.display = "flex";
-
+            tableWrapper.style.display = "none";
+            const e = document.getElementById("mySel");
+            const selectValue = e.options[e.selectedIndex].value;
             $.ajax({
                 type: 'POST',
-                url: '/extract',
+                url: `/extract/${selectValue}`,
                 dataType: 'json',
                 success: function () {
                     $('#transform').attr('disabled', false);
                     $('#extract').attr('disabled', true);
+                    if (myData.length < 0) {
+                        $('#extract').attr('disabled', true);
+                    }
                     loaderEtl.style.display = "none";
-                    alert('Extracted data ready to transform');
+                    tableWrapper.style.display = "block";
+                    alert(`Extracted data ready to transform`);
                 }
             });
         });
@@ -126,12 +142,14 @@ script(type='text/javascript').
         $('#transform').on('click', function () {
             $('#load').attr('disabled', false);
             loaderEtl.style.display = "flex";
+            tableWrapper.style.display = "none";
             $.ajax({
                 type: 'POST',
                 url: '/transform',
                 dataType: 'json',
                 success: function () {
                     loaderEtl.style.display = "none";
+                    tableWrapper.style.display = "block"
                     alert('transformed data ready to load into database');
                     $('#load').attr('disabled', false);
                     $('#transform').attr('disabled', true);
@@ -142,12 +160,14 @@ script(type='text/javascript').
 
         $('#load').on('click', function () {
             loaderEtl.style.display = "flex";
+            tableWrapper.style.display = "none";
             $.ajax({
                 type: 'POST',
                 url: '/load',
                 dataType: 'json',
                 success: function () {
                     loaderEtl.style.display = "none";
+                    loaderEtl.style.display = "block";
                     alert('data succesfully load into database');
                     $('#load').attr('disabled', true);
                     $('#transform').attr('disabled', true);
@@ -158,13 +178,18 @@ script(type='text/javascript').
         });
 
         $('#etl').on('click', function () {
+            loaderEtl.style.display = 'flex';
+            tableWrapper.style.display = 'none';
+            const e = document.getElementById("mySel");
+            const selectValue = e.options[e.selectedIndex].value;
             $.ajax({
                 type: 'POST',
-                url: '/etl',
+                url: `/etl/${selectValue}`,
                 dataType: 'json',
                 success: function () {
                     alert('data successfully load into database');
                     window.location.href = 'http://localhost:3000/';
+
                 }
             });
         });
@@ -172,8 +197,7 @@ script(type='text/javascript').
 
     const clearBtn = document.getElementById('clear');
     const loader = document.getElementById('loader');
-    
-    const tableWrapper = document.getElementById('wrapper');
+
     clearBtn.addEventListener('click', function () {
         loader.style.display = "flex";
         tableWrapper.style.display = "none";

@@ -113,3 +113,20 @@ body {
   background: #6666ff;
   border: none;
 }
+.chooser {
+  display: flex;
+  flex-direction: row-reverse;
+  color: white;
+  height: 20px;
+  margin-top: 2%;
+  margin-right: 4%;
+  align-items: baseline;
+}
+.chooser p {
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 2%;
+}
+#mySel {
+  cursor: pointer;
+}
