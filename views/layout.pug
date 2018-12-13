@@ -25,16 +25,24 @@ body#body
                 div
             p Czyszczenie bazy danych...
         #loaderEtl.loader
-          .lds-roller
-              div
-              div
-              div
-              div
-              div
-              div
-              div
-              div
-          p Przetwarzenie danych...
+            .lds-roller
+                div
+                div
+                div
+                div
+                div
+                div
+                div
+                div
+            p Przetwarzenie danych...
+        #chooser.chooser
+
+            select#mySel
+                option(value='krakow') Kraków
+                option(value='warsaw') Warszawa
+                option(value='rzeszow') Rzeszów
+                option(value='wroclaw') Wrocław
+            p Wybierz miasto:
         #wrapper.wrapper
             .buttons
                 button#extract(type="button") Extract
@@ -112,15 +120,16 @@ script(type='text/javascript').
 
             loaderEtl.style.display = "flex";
             tableWrapper.style.display = "none";
-
+            const e = document.getElementById("mySel");
+            const selectValue = e.options[e.selectedIndex].value;
             $.ajax({
                 type: 'POST',
-                url: '/extract',
+                url: `/extract/${selectValue}`,
                 dataType: 'json',
                 success: function () {
                     $('#transform').attr('disabled', false);
                     $('#extract').attr('disabled', true);
-                    if(myData.length < 0) {
+                    if (myData.length < 0) {
                         $('#extract').attr('disabled', true);
                     }
                     loaderEtl.style.display = "none";
@@ -133,7 +142,7 @@ script(type='text/javascript').
         $('#transform').on('click', function () {
             $('#load').attr('disabled', false);
             loaderEtl.style.display = "flex";
-            tableWrapper.style.display= "none";
+            tableWrapper.style.display = "none";
             $.ajax({
                 type: 'POST',
                 url: '/transform',
@@ -171,9 +180,11 @@ script(type='text/javascript').
         $('#etl').on('click', function () {
             loaderEtl.style.display = 'flex';
             tableWrapper.style.display = 'none';
+            const e = document.getElementById("mySel");
+            const selectValue = e.options[e.selectedIndex].value;
             $.ajax({
                 type: 'POST',
-                url: '/etl',
+                url: `/etl/${selectValue}`,
                 dataType: 'json',
                 success: function () {
                     alert('data successfully load into database');

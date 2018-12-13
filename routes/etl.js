@@ -16,8 +16,15 @@ const client = new Client({
 
 client.connect()
 
-router.post('/', async function (req, res) {
-    let uri = `https://www.gumtree.pl/s-nieruchomosci/krakow/v1c2l3200208p1`;
+router.post('/:city', async function (req, res,) {
+    const { city } = req.params;
+    const urls = {
+        krakow: "https://www.gumtree.pl/s-nieruchomosci/krakow/v1c2l3200208p1",
+        rzeszow: "https://www.gumtree.pl/s-nieruchomosci/rzeszow/v1c2l3200252p1",
+        warsaw: "https://www.gumtree.pl/s-nieruchomosci/warszawa/v1c2l3200008p1",
+        wroclaw: "https://www.gumtree.pl/s-nieruchomosci/wroclaw/v1c2l3200114p1"
+    };
+    let uri = urls[city];
     const bodies = [];
     for(let i = 0; i < 3; i++) {
         const body = await extraction.perform(uri);
