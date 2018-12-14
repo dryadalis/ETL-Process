@@ -23,7 +23,7 @@ body#body
                 div
                 div
                 div
-            p Czyszczenie bazy danych...
+            p Clearing the database ...
         #loaderEtl.loader
             .lds-roller
                 div
@@ -34,7 +34,7 @@ body#body
                 div
                 div
                 div
-            p Przetwarzenie danych...
+            p Data processing...
         #chooser.chooser
 
             select#mySel
@@ -42,7 +42,7 @@ body#body
                 option(value='warsaw') Warszawa
                 option(value='rzeszow') Rzeszów
                 option(value='wroclaw') Wrocław
-            p Wybierz miasto:
+            p Choose a city:
         #wrapper.wrapper
             .buttons
                 button#extract(type="button") Extract
@@ -50,7 +50,7 @@ body#body
                 button#load(type="button" disabled='true') Load
                 button#etl(type='button') ETL
                 a(href='clear')
-                    button#clear(type='button') Wyczyść bazę danych
+                    button#clear(type='button') Clear the database
             table#example.display(style='width:100%;')
 
 script(type='text/javascript').
@@ -60,7 +60,7 @@ script(type='text/javascript').
 
     $(document).ready(function () {
         if (window.location.href.indexOf('#cleared') !== -1) {
-            alert("Twoja baza danych została wyczyszczona");
+            alert("Your database has been cleared");
         }
 
         let table = $('#example').DataTable({

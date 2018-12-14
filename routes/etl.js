@@ -8,7 +8,8 @@ const cheerio = require('cheerio')
 const {Client} = require('pg');
 
 
-const connectionString = 'postgres://qilciwcvmwwkeq:88b0ff2774f7302ceceeba40058199fa504e54addcefd32035ec051a4f8071da@ec2-54-246-84-200.eu-west-1.compute.amazonaws.com:5432/daf8aj45cvn96o?ssl=true'
+const connectionString = 'postgres://ppbqhddekvzfau:d1a2238abc077848c9e922e7b14855b616b6be4e62ccf32baa65c2c67198776a@ec2-46-51-184-66.eu-west-1.compute.amazonaws.com:5432/dfem24oqv2gjut?ssl=true'
+
 
 const client = new Client({
     connectionString: connectionString,
@@ -61,7 +62,7 @@ router.post('/:city', async function (req, res,) {
     const prices = transformation_result[1];
     const dataOfAddition = transformation_result[2];
 
-    const allEtlData = title.length + prices.length + dataOfAddition.length;
+    const allEtlData = titles.length + prices.length + dataOfAddition.length;
     await loading.perform(titles, prices, client, dataOfAddition);
     await client.query("DELETE FROM transformationresult");
 
