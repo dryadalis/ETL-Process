@@ -20,14 +20,21 @@ router.post('/', async function (req, res) {
             let titles = transform[3];
             let prices = transform[4];
             let dataOfAddition = transform[5];
-            let transformation_json = JSON.stringify([titles, prices, dataOfAddition]);
+            let locations = transform[6];
+            let loaner = transform[7];
+            let size = transform[8];
+            let numberOfRooms = transform[9];
+            let numnberOfBathrooms = transform[10]
+
+            let transformation_json = JSON.stringify([titles, prices, dataOfAddition, locations, loaner, size, numberOfRooms, numnberOfBathrooms]);
+
+
             transformation_save.push(transformation_json);
-            let allTransformetData = prices.length + titles.length + dataOfAddition.length;
+            let allTransformetData = prices.length + titles.length + dataOfAddition.length + loaner.length + size.length + numberOfRooms.length + numnberOfBathrooms.length;
             res.json({amount: allTransformetData});
         })
         .then(() => client.query("DELETE FROM transformationresult"))
         .then(() => client.query("INSERT INTO TransformationResult(transformation) VALUES ($1)", transformation_save))
-        .then(() => res.json({status: 'ready'}))
         .catch((err) => {
             console.log(err);
         });

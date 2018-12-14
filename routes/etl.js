@@ -48,7 +48,12 @@ router.post('/:city', async function (req, res,) {
             let titles = transform[3];
             let prices = transform[4];
             let dataOfAddition = transform[5];
-            let transformation_json = JSON.stringify([titles, prices, dataOfAddition]);
+            let locations = transform[6];
+            let loaner = transform[7];
+            let size = transform[8];
+            let numberOfRooms = transform[9];
+
+            let transformation_json = JSON.stringify([titles, prices, dataOfAddition, locations, loaner, size, numberOfRooms]);
             transformation_save.push(transformation_json);
         })
         .then(() => client.query("DELETE FROM transformationresult"))
@@ -61,9 +66,14 @@ router.post('/:city', async function (req, res,) {
     const titles = transformation_result[0];
     const prices = transformation_result[1];
     const dataOfAddition = transformation_result[2];
+    const locations = transformation_result[3];
+    const loaner = transformation_result[4];
+    const size = transformation_result[5];
+    const numberOfRooms = transformation_result[6];
 
-    const allEtlData = titles.length + prices.length + dataOfAddition.length;
-    await loading.perform(titles, prices, client, dataOfAddition);
+    const allEtlData = titles.length + prices.length + dataOfAddition.length + locations.length + size.length + numberOfRooms.length;
+
+    await loading.perform(titles, prices, client, dataOfAddition, locations, loaner, size, numberOfRooms);
     await client.query("DELETE FROM transformationresult");
 
     res.json({status: 'ready', amountB: bodies.length, amountAll: allEtlData});

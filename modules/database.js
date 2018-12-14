@@ -14,10 +14,10 @@ client.connect((err) => {
 });
 
 client.query(
-    'SELECT to_regclass("table_realestate")', (err) => {
+    'SELECT to_regclass("table_realestate")', async (err) => {
             if(err.code === '42703') {
-                client.query('DROP TABLE IF EXISTS Realestate');
-                client.query('CREATE TABLE Realestate( ID SERIAL PRIMARY KEY, Title text CONSTRAINT must_be_different UNIQUE, Price text, DataOfAddition text)');
+                await client.query('DROP TABLE IF EXISTS Realestate');
+                await client.query('CREATE TABLE Realestate( ID SERIAL PRIMARY KEY, Title text CONSTRAINT must_be_different UNIQUE, Price text, DataOfAddition text, Location text, Loaner text, Size text, NumberOfRooms text)');
         }
-        process.exit(0)
+        process.exit(0);
     });

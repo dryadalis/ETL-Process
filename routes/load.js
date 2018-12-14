@@ -17,9 +17,13 @@ router.post('/', async function (req, res) {
     const titles = transformation_result[0];
     const prices = transformation_result[1];
     const dataOfAddition = transformation_result[2];
+    const locations = transformation_result[3];
+    const loaner = transformation_result[4];
+    const size = transformation_result[5];
+    const numberOfRooms = transformation_result[6];
 
-    const allLoadedData = titles.length + prices.length + dataOfAddition.length;
-    await loading.perform(titles, prices, client, dataOfAddition);
+    await loading.perform(titles, prices, client, dataOfAddition, locations, loaner, size, numberOfRooms);
+    const allLoadedData = titles.length + prices.length + dataOfAddition.length + locations.length + size.length + numberOfRooms.length;
     await client.query("DELETE FROM transformationresult");
     res.json({status: 'ready', amount: allLoadedData});
 });

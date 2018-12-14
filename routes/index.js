@@ -13,15 +13,20 @@ const client = new Client({
 client.connect()
 
 router.get('/', function (req, res) {
-    client.query("SELECT title, price, description FROM realestate", (err, response) => {
+    client.query("SELECT title, price, dataOfAddition, location, loaner, size, numberOfRooms FROM realestate", (err, response) => {
         if (err) throw err;
         const titles = response.rows;
         const prices = response.rows;
-        const descriptions = response.rows;
+        const dataofaddition= response.rows;
+        const location = response.rows;
+        const loaner = response.rows;
+        const size = response.rows;
+        const numberOfRooms = response.rows;
         const arr = [];
 
+        console.log(response.rows);
         for (let i = 0; i < titles.length; i++) {
-            arr.push([titles[i].title, prices[i].price, descriptions[i].description]);
+            arr.push([titles[i].title, prices[i].price, dataofaddition[i].dataofaddition, location[i].location, loaner[i].loaner, size[i].size, numberOfRooms[i].numberofrooms]);
         }
 
         res.render('layout', {

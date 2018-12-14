@@ -51,6 +51,7 @@ body#body
                 button#etl(type='button') ETL
                 a(href='clear')
                     button#clear(type='button') Clear the database
+                button#reset(type='button') Reset
             table#example.display(style='width:100%;')
 
 script(type='text/javascript').
@@ -72,18 +73,28 @@ script(type='text/javascript').
                 },
                 {
                     title: "Price[zł]",
-                    width: '8%',
+                    width: '8%'
                 },
                 {
                     title: "Date of addition",
-                    width: '8%',
+                    width: '8%'
                 },
                 {
-                    defaultContent: "<button class='csvBtn'><i class=\"fas fa-file-download\"></i> CSV</button>",
-                    title: "Export",
-                    orderable: false,
-                    width: '5%',
-                }
+                    title: "Locations",
+                    width: "8%"
+                },
+                {
+                    title: "Loaner",
+                    width: "8%"
+                },
+                {
+                    title: "Size[m2]",
+                    width: "8%"
+                },
+                {
+                    title: "Number of rooms",
+                    width: "8%"
+                },
             ],
             dom: 'Bfrtip',
             buttons: [
@@ -101,7 +112,7 @@ script(type='text/javascript').
                 .data();
 
             const stringData = data.join(',')
-            const title = "Title, Price[zł], Addition date\r\n"
+            const title = "Title, Price[zł], Addition date, Locations, Loaner, Size, Number of rooms\r\n"
 
             let csvContent = "data:text/csv;charset=utf-8," + title + stringData;
 
@@ -203,3 +214,8 @@ script(type='text/javascript').
         loader.style.display = "flex";
         tableWrapper.style.display = "none";
     });
+
+    const resetBtn = document.getElementById('reset');
+    resetBtn.addEventListener('click', function () {
+        window.location.href = 'http://localhost:3000/';
+    })
